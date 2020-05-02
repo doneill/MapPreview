@@ -1,0 +1,12 @@
+[
+  {
+    "caption": "Map Preview",
+    "id": "map-preview",
+    "children": [
+      {
+        "caption": "Preview in Browser",
+        "command": "preview"
+      }
+    ]
+  }
+]
