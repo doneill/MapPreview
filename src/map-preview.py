@@ -71,7 +71,7 @@ class PreviewCommand(sublime_plugin.TextCommand):
         html = messageBegin + geojsonFeature + messageEnd
 
         # update output HTML file
-        tmp_fullpath = get_temp_preview_path(self.view)
+        tmp_fullpath = get_temp_preview_path(view)
         save_utf8(tmp_fullpath, html)
 
         webbrowser.open_new_tab("file:///" + tmp_fullpath)
