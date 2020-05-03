@@ -3,18 +3,35 @@ import codecs
 import os
 import sublime
 import sublime_plugin
-import tempfile
 import webbrowser
+
+def log(msg):
+
+    print("MapPreview: %s" % msg)
+
+def save_utf8(filename, text):
+
+    with codecs.open(filename, 'w', encoding='utf-8')as f:
+        f.write(text)
+        f.close
+
+def get_temp_preview_path(view):
+
+    tmp_filename = '%s.html' % view.id()
+    tmp_dir = os.path.join(os.path.dirname(view.file_name()), "")
+
+    if not os.path.isdir(tmp_dir):
+        os.makedirs(tmp_dir)
+
+    tmp_fullpath = os.path.join(tmp_dir, tmp_filename)
+    return tmp_fullpath
 
 class PreviewCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        f = open('./map.html', 'w')
-
         view = self.view
 
         geojson = view.substr(sublime.Region(0, view.size()))
-        print(geojson)
 
         messageBegin = """
           <html>
@@ -53,14 +70,8 @@ class PreviewCommand(sublime_plugin.TextCommand):
 
         html = messageBegin + geojsonFeature + messageEnd
 
-        f.write(html)
-        f.close
-
         # update output HTML file
         tmp_fullpath = get_temp_preview_path(self.view)
         save_utf8(tmp_fullpath, html)
 
-        self.__class__.open_in_browser(tmp_fullpath, self.settings.get('browser', 'default'))
-
-        filename = 'file:///Users/dop/dev/github-doneill/st3-map-preview/' + 'map.html'
-        webbrowser.open_new_tab(filename)
+        webbrowser.open_new_tab("file:///" + tmp_fullpath)
