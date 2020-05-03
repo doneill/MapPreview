@@ -3,6 +3,7 @@ import codecs
 import os
 import sublime
 import sublime_plugin
+import tempfile
 import webbrowser
 
 def log(msg):
@@ -14,8 +15,16 @@ def save_utf8(filename, text):
         f.close
 
 def get_temp_preview_path(view):
+    settings = sublime.load_settings('MapPreview.sublime-settings')
+
     tmp_filename = '%s.html' % view.id()
-    tmp_dir = os.path.dirname(view.file_name())
+    if settings.get('path_tempfile'):
+        if os.path.isabs(settings.get('path_tempfile')):  # absolute path or not
+            tmp_dir = settings.get('path_tempfile')
+        else:
+            tmp_dir = os.path.join(os.path.dirname(view.file_name()), settings.get('path_tempfile'))
+    else:
+        tmp_dir = tempfile.gettempdir()
 
     if not os.path.isdir(tmp_dir):
         os.makedirs(tmp_dir)
@@ -26,7 +35,6 @@ def get_temp_preview_path(view):
 class PreviewCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
-
         geojson = view.substr(sublime.Region(0, view.size()))
 
         messageBegin = """
