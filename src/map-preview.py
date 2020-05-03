@@ -6,17 +6,14 @@ import sublime_plugin
 import webbrowser
 
 def log(msg):
-
     print("MapPreview: %s" % msg)
 
 def save_utf8(filename, text):
-
     with codecs.open(filename, 'w', encoding='utf-8')as f:
         f.write(text)
         f.close
 
 def get_temp_preview_path(view):
-
     tmp_filename = '%s.html' % view.id()
     tmp_dir = os.path.dirname(view.file_name())
 
@@ -27,7 +24,6 @@ def get_temp_preview_path(view):
     return tmp_fullpath
 
 class PreviewCommand(sublime_plugin.TextCommand):
-
     def run(self, edit):
         view = self.view
 
