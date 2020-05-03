@@ -131,4 +131,5 @@ dmypy.json
 .pyre/
 
 # local data
+test/
 *.geojson
