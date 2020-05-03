@@ -69,8 +69,27 @@ class PreviewCommand(sublime_plugin.TextCommand):
             messageEnd = """
                   var map = L.map('map');
                   tiles.addTo(map);
-                  L.geoJSON(geojsonFeature).addTo(map);
+                  var layerGroup = L.geoJSON(geojsonFeature, {
+                      onEachFeature: function (feature, layer) {
+                          layer.on({
+                            'mouseover': featureProps
+                          });
+                      }
+                  }).addTo(map);
                   map.fitBounds(L.geoJSON(geojsonFeature).getBounds())
+                  function featureProps(e) {
+                      var layer = e.target;
+                      props = layer.feature.properties;
+                      attrs = Object.keys(props);
+                      var str = '';
+                      for (var i = 0; i < attrs.length; i += 1) {
+                          attribute = attrs[i];
+                          value = props[attribute];
+                          str += attribute + ' : ' + value + '<br>'
+                      }
+
+                      layer.bindPopup(str);
+                  }
                 </script>
               </body>
             </head>
