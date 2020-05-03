@@ -36,71 +36,75 @@ def get_temp_preview_path(view):
 class PreviewCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
-        geojson = view.substr(sublime.Region(0, view.size()))
+        viewText = view.substr(sublime.Region(0, view.size()))
 
         try:
-            json.loads(geojson)
+            # ensure we have json from view
+            validateJson = json.loads(viewText)
+            # check if json valid spatial type
+            if "type" in validateJson:
+                messageBegin = """
+                <html>
+                  <head>
+                    <title>ST-Map Preview</title>
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+                      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+                      crossorigin=""/>
+                    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+                      integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+                      crossorigin=""></script>
+                    <style>
+                      #map{ height: 100% }
+                    </style>
+                  </head>
+                  <body>
+                    <div id="map"></div>
+                    <script>
+                      mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+                      var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                      attribution: '&copy; ' + mapLink + ' Contributors'
+                     });
+                """
 
-            messageBegin = """
-            <html>
-              <head>
-                <title>ST-Map Preview</title>
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-                  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-                  crossorigin=""/>
-                <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-                  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-                  crossorigin=""></script>
-                <style>
-                  #map{ height: 100% }
-                </style>
-              </head>
-              <body>
-                <div id="map"></div>
-                <script>
-                  mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-                  var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                  attribution: '&copy; ' + mapLink + ' Contributors'
-                 });
-            """
+                geojsonFeature = "    var geojsonFeature = {};".format(viewText)
 
-            geojsonFeature = "    var geojsonFeature = {};".format(geojson)
+                messageEnd = """
+                      var map = L.map('map');
+                      tiles.addTo(map);
+                      var layerGroup = L.geoJSON(geojsonFeature, {
+                          onEachFeature: function (feature, layer) {
+                              layer.on({
+                                'mouseover': featureProps
+                              });
+                          }
+                      }).addTo(map);
+                      map.fitBounds(L.geoJSON(geojsonFeature).getBounds())
+                      function featureProps(e) {
+                          var layer = e.target;
+                          props = layer.feature.properties;
+                          attrs = Object.keys(props);
+                          var str = '';
+                          for (var i = 0; i < attrs.length; i += 1) {
+                              attribute = attrs[i];
+                              value = props[attribute];
+                              str += '<b>' + attribute + '</b> : ' + value + '<br>'
+                          }
 
-            messageEnd = """
-                  var map = L.map('map');
-                  tiles.addTo(map);
-                  var layerGroup = L.geoJSON(geojsonFeature, {
-                      onEachFeature: function (feature, layer) {
-                          layer.on({
-                            'mouseover': featureProps
-                          });
+                          layer.bindPopup(str);
                       }
-                  }).addTo(map);
-                  map.fitBounds(L.geoJSON(geojsonFeature).getBounds())
-                  function featureProps(e) {
-                      var layer = e.target;
-                      props = layer.feature.properties;
-                      attrs = Object.keys(props);
-                      var str = '';
-                      for (var i = 0; i < attrs.length; i += 1) {
-                          attribute = attrs[i];
-                          value = props[attribute];
-                          str += attribute + ' : ' + value + '<br>'
-                      }
+                    </script>
+                  </body>
+                </head>
+                """
 
-                      layer.bindPopup(str);
-                  }
-                </script>
-              </body>
-            </head>
-            """
+                html = messageBegin + geojsonFeature + messageEnd
 
-            html = messageBegin + geojsonFeature + messageEnd
+                # update output HTML file
+                tmp_fullpath = get_temp_preview_path(view)
+                save_utf8(tmp_fullpath, html)
 
-            # update output HTML file
-            tmp_fullpath = get_temp_preview_path(view)
-            save_utf8(tmp_fullpath, html)
-
-            webbrowser.open_new_tab("file:///" + tmp_fullpath)
+                webbrowser.open_new_tab("file:///" + tmp_fullpath)
+            else:
+                sublime.error_message("Could not convert file.\n\n Not valid spatial type")
         except Exception as ex:
             sublime.error_message("Could not convert file.\n\n %s" % ex)
