@@ -1,0 +1,13 @@
+/*
+    Map Preview default settings
+*/
+{
+    /*
+        Sets the default opener for HTML files
+    */
+    "browser": "default",
+    /*
+        Set temporary file location
+    */
+    "path_tempfile": ""
+}
