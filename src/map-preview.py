@@ -18,7 +18,7 @@ def save_utf8(filename, text):
 def get_temp_preview_path(view):
 
     tmp_filename = '%s.html' % view.id()
-    tmp_dir = os.path.join(os.path.dirname(view.file_name()), "")
+    tmp_dir = os.path.dirname(view.file_name())
 
     if not os.path.isdir(tmp_dir):
         os.makedirs(tmp_dir)
