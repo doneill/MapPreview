@@ -2,6 +2,8 @@
 
 Preview map layer files in your web browser using [Sublime Text 3](https://www.sublimetext.com/).
 
+![Map Preview image](map-preview.png)
+
 ## Features
 
   - Interactive Map preview powered by [LeafletJS](https://leafletjs.com/)
