@@ -35,4 +35,7 @@ With an open valid GeoJSON or TopoJSON file in Sublime Text 3:
 
 ## Troubleshooting
 
-- If your files are being alerted as not valid, plase try at another source, e.g. [geojson.io](https://geojson.io) to confirm. If you feel like your json file is valid and should be shown please ceate an issue and we will take a look. 
+- If your files are being alerted as not valid, plase try at another source, e.g. [geojson.io](https://geojson.io) to confirm. If you feel like your json file is valid and should be shown please ceate an issue and we will take a look.
+
+## Licensing
+A copy of the license is available in the repository's [LICENSE](LICENSE) file.
