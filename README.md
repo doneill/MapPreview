@@ -24,7 +24,7 @@ Map Preview is currently under review to be available as a package in [Package M
 # move to default Mac location
 $ cd ~/Libary/Application Support/Sublime Text 3/Packages
 # clone directly into the pakcages directory with folder name mappreview
-$ git clone git@github.com:doneill/st3-map-preview.git mappreview
+$ git clone git@github.com:doneill/MapPreview.git mappreview
 
 ```
 
