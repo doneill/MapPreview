@@ -15,10 +15,14 @@ Preview map layer files in your web browser using [Sublime Text 3](https://www.s
 
 ## Installation
 
-Map Preview is currently under review to be available as a package in [Package Manager](https://packagecontrol.io/).  Instructrions will be updated once we are included in the package controll system.  Until then you can manually install using this repository as follows:
+Install MapPreview via [Package Control](https://packagecontrol.io/search/MapPreview)
 
-### Manual Install
-- Clone the **st3-map-preview** repo into the Sublime Text packages location: 
+- Open Package Control: **Preferences > Package Control**
+- Select **Package Control: Install Package**
+- Type **MapPreview** into the search box and select the package to install it.
+
+### Manual Install (To be removed once package control is working)
+- Clone the **MapPreview** repo into the Sublime Text packages location: 
 
 ```bash
 # move to default Mac location
