@@ -39,5 +39,10 @@ With an open valid GeoJSON or TopoJSON file in Sublime Text 3:
 
 - If your files are being alerted as not valid, please try to load with another source, e.g. [geojson.io](https://geojson.io) to confirm. If you feel like your json file is valid and should be shown please create an [issue](https://github.com/doneill/st3-map-preview/issues) for us to take a look.
 
+## Contributors
+<a href="https://github.com/doneill/st3-map-preview/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=doneill/st3-map-preview" />
+</a>
+
 ## Licensing
 A copy of the license is available in the repository's [LICENSE](LICENSE) file.
