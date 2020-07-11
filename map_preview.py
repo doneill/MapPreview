@@ -2,7 +2,7 @@
 import codecs
 import os
 import json
-import mappreview.webmap as wm
+import MapPreview.webmap as wm
 import sublime
 import sublime_plugin
 import tempfile
