@@ -1,7 +1,7 @@
 [
   {
     "caption": "Map Preview",
-    "id": "mappreview",
+    "id": "MapPreview",
     "children": [
       {
         "caption": "Preview in Browser",
