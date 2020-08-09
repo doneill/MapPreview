@@ -11,6 +11,11 @@ Preview map layer files in your web browser using [Sublime Text 3](https://www.s
 ## Supported Formats
 
   - [GeoJSON](https://geojson.org/)
+
+    Currently support the following types:
+    - [Features](https://tools.ietf.org/html/rfc7946#section-3.2)
+    - [FeatureCollections](https://tools.ietf.org/html/rfc7946#section-3.3)
+
   - [TopoJSON](https://github.com/topojson/topojson/wiki)
 
 ## Installation

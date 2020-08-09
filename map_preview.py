@@ -45,18 +45,23 @@ class PreviewCommand(sublime_plugin.TextCommand):
             # check if json valid spatial type
             if "type" in validateJson:
                 # check if valid GeoJSON
-                if validateJson["type"] == "FeatureCollection":
+                if validateJson["type"] == "FeatureCollection" or validateJson["type"] == "Feature":
                     type = "geojson"
                     html = wm.render(viewText, type)
-                else:
+                elif validateJson["type"] == "Topology":
                     type = "topojson"
                     html = wm.render(viewText, type)
 
-                # update output HTML file
-                tmp_fullpath = get_temp_preview_path(view)
-                save_utf8(tmp_fullpath, html)
+                try:
+                    html
+                except NameError:
+                    sublime.error_message("Could not convert file.\n\n Not valid GeoJSON or TopoJSON")
+                else:
+                    # update output HTML file
+                    tmp_fullpath = get_temp_preview_path(view)
+                    save_utf8(tmp_fullpath, html)
 
-                webbrowser.open_new_tab("file:///" + tmp_fullpath)
+                    webbrowser.open_new_tab("file:///" + tmp_fullpath)
 
             else:
                 sublime.error_message("Could not convert file.\n\n Not valid spatial type")
