@@ -1,4 +1,5 @@
 # Map Preview
+![CodeQL](https://github.com/doneill/MapPreview/workflows/CodeQL/badge.svg)
 
 Preview map layer files in your web browser using [Sublime Text 3](https://www.sublimetext.com/).
 
